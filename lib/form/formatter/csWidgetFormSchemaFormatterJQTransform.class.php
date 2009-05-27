@@ -23,4 +23,22 @@ class csWidgetFormSchemaFormatterJQTransform extends sfWidgetFormSchemaFormatter
     $errorRowFormat  = "<span class='error'>\n%errors%</span>\n",
     $helpFormat      = '<br />%help%',
     $decoratorFormat = "<div class='cs-form'>\n  %content%</div>";
+
+  // Adds Schema Class to row decorator
+  public function generateLabel($name, $attributes = array())
+  {
+    $this->rowFormat = "<div class='row' id='$name_row'>\n  %label%\n  %error%%field%%help%%hidden_fields%</div>\n";
+    $labelName = $this->generateLabelName($name);
+
+    if (false === $labelName)
+    {
+      return '';
+    }
+
+    if (!isset($attributes['for']))
+    {
+      $attributes['for'] = $this->widgetSchema->generateId($this->widgetSchema->generateName($name));
+    }
+    return $this->widgetSchema->renderContentTag('label', $labelName, $attributes);
+  }    
 }
