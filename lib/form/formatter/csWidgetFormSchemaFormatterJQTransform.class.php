@@ -27,7 +27,7 @@ class csWidgetFormSchemaFormatterJQTransform extends sfWidgetFormSchemaFormatter
   // Adds Schema Class to row decorator
   public function generateLabel($name, $attributes = array())
   {
-    $this->rowFormat = "<div class='row' id='$name_row'>\n  %label%\n  %error%%field%%help%%hidden_fields%</div>\n";
+    $this->rowFormat = "<div class='row' id='".$name."_row'>\n  %label%\n  %error%%field%%help%%hidden_fields%</div>\n";
     $labelName = $this->generateLabelName($name);
 
     if (false === $labelName)
