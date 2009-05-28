@@ -27,7 +27,7 @@ __Second__ add {{{ use_helper('FormTransform'); }}} to your view where you are d
 
 __Third__ add the class _jqtransform_ to the form or forms you want to be transformed.
 
-And you're done!  
+And you're done!  __Note__: Don't forget to publish your assets (_./symfony plugin:publish-assets_).  If you do, the javascripts will not be included.
 
 ##Options
 

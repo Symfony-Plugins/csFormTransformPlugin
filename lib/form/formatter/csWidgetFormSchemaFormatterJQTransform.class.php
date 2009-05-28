@@ -19,15 +19,15 @@
 class csWidgetFormSchemaFormatterJQTransform extends sfWidgetFormSchemaFormatter
 {
   protected
-    $rowFormat       = "<div class='row'>\n  %label%\n  %error%%field%%help%%hidden_fields%</div>\n",
+    $rowFormat       = "<div class='row' id='%name%'>\n  %label%\n  %error%%field%%help%%hidden_fields%</div>\n",
     $errorRowFormat  = "<span class='error'>\n%errors%</span>\n",
     $helpFormat      = '<br />%help%',
-    $decoratorFormat = "<div class='cs-form'>\n  %content%</div>";
-
+    $decoratorFormat = "<div class='cs-form'>\n  %content%</div>",
+    $rowName         = "";
   // Adds Schema Class to row decorator
   public function generateLabel($name, $attributes = array())
   {
-    $this->rowFormat = "<div class='row' id='".$name."_row'>\n  %label%\n  %error%%field%%help%%hidden_fields%</div>\n";
+    $this->rowName = $name;
     $labelName = $this->generateLabelName($name);
 
     if (false === $labelName)
@@ -40,5 +40,18 @@ class csWidgetFormSchemaFormatterJQTransform extends sfWidgetFormSchemaFormatter
       $attributes['for'] = $this->widgetSchema->generateId($this->widgetSchema->generateName($name));
     }
     return $this->widgetSchema->renderContentTag('label', $labelName, $attributes);
-  }    
+  }
+  public function formatRow($label, $field, $errors = array(), $help = '', $hiddenFields = null)
+  {
+    $name = $this->rowName;
+    $this->rowName = "";
+    return strtr($this->getRowFormat(), array(
+      '%label%'         => $label,
+      '%field%'         => $field,
+      '%name%'          => $name,
+      '%error%'         => $this->formatErrorsForRow($errors),
+      '%help%'          => $this->formatHelp($help),
+      '%hidden_fields%' => is_null($hiddenFields) ? '%hidden_fields%' : $hiddenFields,
+    ));
+  }
 }
